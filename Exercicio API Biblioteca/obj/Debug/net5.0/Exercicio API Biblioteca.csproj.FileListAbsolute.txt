@@ -1,0 +1,39 @@
+C:\Users\PremierSoft\Arquivos VS\Exercicio API Biblioteca\Exercicio API Biblioteca\bin\Debug\net5.0\appsettings.Development.json
+C:\Users\PremierSoft\Arquivos VS\Exercicio API Biblioteca\Exercicio API Biblioteca\bin\Debug\net5.0\appsettings.json
+C:\Users\PremierSoft\Arquivos VS\Exercicio API Biblioteca\Exercicio API Biblioteca\bin\Debug\net5.0\Exercicio API Biblioteca.exe
+C:\Users\PremierSoft\Arquivos VS\Exercicio API Biblioteca\Exercicio API Biblioteca\bin\Debug\net5.0\Exercicio API Biblioteca.deps.json
+C:\Users\PremierSoft\Arquivos VS\Exercicio API Biblioteca\Exercicio API Biblioteca\bin\Debug\net5.0\Exercicio API Biblioteca.runtimeconfig.json
+C:\Users\PremierSoft\Arquivos VS\Exercicio API Biblioteca\Exercicio API Biblioteca\bin\Debug\net5.0\Exercicio API Biblioteca.runtimeconfig.dev.json
+C:\Users\PremierSoft\Arquivos VS\Exercicio API Biblioteca\Exercicio API Biblioteca\bin\Debug\net5.0\Exercicio API Biblioteca.dll
+C:\Users\PremierSoft\Arquivos VS\Exercicio API Biblioteca\Exercicio API Biblioteca\bin\Debug\net5.0\ref\Exercicio API Biblioteca.dll
+C:\Users\PremierSoft\Arquivos VS\Exercicio API Biblioteca\Exercicio API Biblioteca\bin\Debug\net5.0\Exercicio API Biblioteca.pdb
+C:\Users\PremierSoft\Arquivos VS\Exercicio API Biblioteca\Exercicio API Biblioteca\bin\Debug\net5.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\PremierSoft\Arquivos VS\Exercicio API Biblioteca\Exercicio API Biblioteca\bin\Debug\net5.0\Microsoft.AspNetCore.JsonPatch.dll
+C:\Users\PremierSoft\Arquivos VS\Exercicio API Biblioteca\Exercicio API Biblioteca\bin\Debug\net5.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+C:\Users\PremierSoft\Arquivos VS\Exercicio API Biblioteca\Exercicio API Biblioteca\bin\Debug\net5.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\PremierSoft\Arquivos VS\Exercicio API Biblioteca\Exercicio API Biblioteca\bin\Debug\net5.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\PremierSoft\Arquivos VS\Exercicio API Biblioteca\Exercicio API Biblioteca\bin\Debug\net5.0\Microsoft.IdentityModel.Protocols.dll
+C:\Users\PremierSoft\Arquivos VS\Exercicio API Biblioteca\Exercicio API Biblioteca\bin\Debug\net5.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\PremierSoft\Arquivos VS\Exercicio API Biblioteca\Exercicio API Biblioteca\bin\Debug\net5.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\PremierSoft\Arquivos VS\Exercicio API Biblioteca\Exercicio API Biblioteca\bin\Debug\net5.0\Microsoft.OpenApi.dll
+C:\Users\PremierSoft\Arquivos VS\Exercicio API Biblioteca\Exercicio API Biblioteca\bin\Debug\net5.0\Newtonsoft.Json.dll
+C:\Users\PremierSoft\Arquivos VS\Exercicio API Biblioteca\Exercicio API Biblioteca\bin\Debug\net5.0\Newtonsoft.Json.Bson.dll
+C:\Users\PremierSoft\Arquivos VS\Exercicio API Biblioteca\Exercicio API Biblioteca\bin\Debug\net5.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\PremierSoft\Arquivos VS\Exercicio API Biblioteca\Exercicio API Biblioteca\bin\Debug\net5.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\PremierSoft\Arquivos VS\Exercicio API Biblioteca\Exercicio API Biblioteca\bin\Debug\net5.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\PremierSoft\Arquivos VS\Exercicio API Biblioteca\Exercicio API Biblioteca\bin\Debug\net5.0\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\PremierSoft\Arquivos VS\Exercicio API Biblioteca\Exercicio API Biblioteca\obj\Debug\net5.0\Exercicio API Biblioteca.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\PremierSoft\Arquivos VS\Exercicio API Biblioteca\Exercicio API Biblioteca\obj\Debug\net5.0\Exercicio API Biblioteca.AssemblyInfoInputs.cache
+C:\Users\PremierSoft\Arquivos VS\Exercicio API Biblioteca\Exercicio API Biblioteca\obj\Debug\net5.0\Exercicio API Biblioteca.AssemblyInfo.cs
+C:\Users\PremierSoft\Arquivos VS\Exercicio API Biblioteca\Exercicio API Biblioteca\obj\Debug\net5.0\Exercicio API Biblioteca.csproj.CoreCompileInputs.cache
+C:\Users\PremierSoft\Arquivos VS\Exercicio API Biblioteca\Exercicio API Biblioteca\obj\Debug\net5.0\Exercicio API Biblioteca.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\PremierSoft\Arquivos VS\Exercicio API Biblioteca\Exercicio API Biblioteca\obj\Debug\net5.0\Exercicio API Biblioteca.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\PremierSoft\Arquivos VS\Exercicio API Biblioteca\Exercicio API Biblioteca\obj\Debug\net5.0\scopedcss\bundle\Exercicio API Biblioteca.styles.css
+C:\Users\PremierSoft\Arquivos VS\Exercicio API Biblioteca\Exercicio API Biblioteca\obj\Debug\net5.0\staticwebassets\Exercicio API Biblioteca.StaticWebAssets.Manifest.cache
+C:\Users\PremierSoft\Arquivos VS\Exercicio API Biblioteca\Exercicio API Biblioteca\obj\Debug\net5.0\Exercicio API Biblioteca.RazorTargetAssemblyInfo.cache
+C:\Users\PremierSoft\Arquivos VS\Exercicio API Biblioteca\Exercicio API Biblioteca\obj\Debug\net5.0\Exercicio API Biblioteca.csproj.CopyComplete
+C:\Users\PremierSoft\Arquivos VS\Exercicio API Biblioteca\Exercicio API Biblioteca\obj\Debug\net5.0\Exercicio API Biblioteca.dll
+C:\Users\PremierSoft\Arquivos VS\Exercicio API Biblioteca\Exercicio API Biblioteca\obj\Debug\net5.0\ref\Exercicio API Biblioteca.dll
+C:\Users\PremierSoft\Arquivos VS\Exercicio API Biblioteca\Exercicio API Biblioteca\obj\Debug\net5.0\Exercicio API Biblioteca.pdb
+C:\Users\PremierSoft\Arquivos VS\Exercicio API Biblioteca\Exercicio API Biblioteca\obj\Debug\net5.0\Exercicio API Biblioteca.genruntimeconfig.cache
+C:\Users\PremierSoft\Arquivos VS\Exercicio API Biblioteca\Exercicio API Biblioteca\obj\Debug\net5.0\Exercicio API Biblioteca.csproj.AssemblyReference.cache
