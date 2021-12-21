@@ -20,28 +20,28 @@ namespace Exercicio_API_Biblioteca.Controllers
         }
 
 
-        [HttpGet, Route("books")]
+        [HttpGet, Route("/books")]
         public IActionResult Get()
         {
             return Ok(_bookService.Get());
         }
 
 
-        [HttpGet, Route("books/{id}")]
+        [HttpGet, Route("/books/{id}")]
         public IActionResult Get(Guid id)
         {
             return Ok(_bookService.Get(id));
         }
 
 
-        [HttpPost, AllowAnonymous, Route("books/{id}")]
-        public IActionResult Register(Guid id, [FromBody] RegisterBookDTO registerBookDTO)
+        [HttpPost, AllowAnonymous, Route("/books")]
+        public IActionResult Register([FromBody] RegisterBookDTO registerBookDTO)
         {
-            return Created("", _bookService.Create(id, registerBookDTO));
+            return Created("", _bookService.Create(registerBookDTO));
 
         }
 
-        [HttpPut, AllowAnonymous, Route ("books/{idBook}")]
+        [HttpPut, AllowAnonymous, Route ("/books/{idBook}")]
         public IActionResult Update (Guid idBook, [FromBody] RegisterBookDTO registerBookDTO)
         {
 
@@ -49,10 +49,11 @@ namespace Exercicio_API_Biblioteca.Controllers
         }
 
 
-        [HttpDelete, AllowAnonymous, Route ("books/{id}")]
+        [HttpDelete, AllowAnonymous, Route ("/books/{id}")]
         public IActionResult Delete (Guid id)
         {
-            return Ok(_bookService.Delete(id));
+            _bookService.Delete(id);
+            return Ok();
         }
 
     }

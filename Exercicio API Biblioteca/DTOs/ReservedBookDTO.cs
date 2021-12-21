@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Exercicio_API_Biblioteca.DTOs
 {
-    public class ReservedBookDTO
+    public class ReservedBookDTO : Validator
     {
         public ReservedBookDTO()
         {
@@ -16,6 +16,10 @@ namespace Exercicio_API_Biblioteca.DTOs
         public DateTime StartDateReserve { get; set; }
         public DateTime EndDateReserve { get; set; }
         public string Status { get; set; }
-        
+
+        public override void Validar()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

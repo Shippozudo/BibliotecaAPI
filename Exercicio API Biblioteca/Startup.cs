@@ -132,10 +132,11 @@ namespace Exercicio_API_Biblioteca
             }
 
             var Admin = new User
-            {   Role = "Funcionario",
+            {
+                Role = "Funcionario",
                 Username = "admin",
                 Password = "admin",
-            };        
+            };
 
             userRepository.Create(Admin);
 

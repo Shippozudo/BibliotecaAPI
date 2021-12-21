@@ -16,6 +16,7 @@ namespace Exercicio_API_Biblioteca.DTOs
         public DateTime StartWithdraw { get; set; }
         public DateTime EndWithdraw { get; set; }
         public string Status { get; set; }
+        public Guid? IdReserve { get; set; }
 
         public override void Validar()
         {

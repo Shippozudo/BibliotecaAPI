@@ -80,8 +80,7 @@ namespace Exercicio_API_Biblioteca.Services
         public bool Delete(Guid id)
         {
             return _authorRepository.Remove(id);
-             
-
+            
         }
 
 

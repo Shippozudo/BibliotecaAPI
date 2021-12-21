@@ -64,6 +64,7 @@ namespace Exercicio_API_Biblioteca.Services
                 Email = createClientDTO.ClientDTO.Email,
                 CEP = createClientDTO.ClientDTO.CEP,
                 Adress = createClientDTO.ClientDTO.Adress,
+                Birthdate = createClientDTO.ClientDTO.Birthdate
 
             };
             _clientRepository.Create(client);
@@ -78,7 +79,8 @@ namespace Exercicio_API_Biblioteca.Services
                 CPF = client.CPF,
                 Email = client.Email,
                 CEP = client.CEP,
-                Adress = adress.Adress
+                Adress = adress.Adress,
+                Birthdate = client.Birthdate
 
 
             };
@@ -122,11 +124,12 @@ namespace Exercicio_API_Biblioteca.Services
         }
 
 
-        public IEnumerable<Client> Get(string name, string cPF, int page, int items)
+        public IEnumerable<Client> Get(string name, string cPF, string birthdate,  int page, int items)
         {
             return _clientRepository.Get()
                 .WhereIfIsNotNull(name, b => b.Name.Contains(name, StringComparison.CurrentCultureIgnoreCase))
                 .WhereIfIsNotNull(cPF, b => b.CPF.Contains(cPF, StringComparison.CurrentCultureIgnoreCase))
+                .WhereIfIsNotNull(birthdate, b => b.Birthdate.Contains(birthdate, StringComparison.CurrentCultureIgnoreCase))
                 .Skip(page == 0 ? 0 : ((page - 1) * page))
                 .Take(items)
                 .ToList();
@@ -148,17 +151,14 @@ namespace Exercicio_API_Biblioteca.Services
 
         public ReservedBookDTO Reserve(Guid idClient, BookToReserveDTO bookToReserveDTO)
         {
+            bookToReserveDTO.Validar();
+
 
             var cli = _clientRepository.Get(idClient);
 
             // Parse Date
             var dateStart = DateTime.ParseExact(bookToReserveDTO.StartDateReserve, "dd/MM/yyyy", CultureInfo.CurrentCulture);
             var dateEnd = DateTime.ParseExact(bookToReserveDTO.EndDateReserve, "dd/MM/yyyy", CultureInfo.CurrentCulture);
-
-            if (dateStart.AddDays(5) > dateEnd)
-            {
-                dateEnd = dateStart.AddDays(5);
-            }
 
             var listBook = new List<BookListReserve>();
             var disponible = 0;
@@ -222,6 +222,8 @@ namespace Exercicio_API_Biblioteca.Services
 
         public ReservedBookDTO UpdateReserve(Guid idReserve, Guid idClient, BookToReserveDTO bookToReserveDTO)
         {
+            bookToReserveDTO.Validar();
+
             var reserve = _bookToReserveRepository.Get(idReserve);
             var cli = _clientRepository.Get(idClient);
             var dateStart = DateTime.ParseExact(bookToReserveDTO.StartDateReserve, "d/M/yyyy", CultureInfo.CurrentCulture);
@@ -287,49 +289,53 @@ namespace Exercicio_API_Biblioteca.Services
         }
 
 
-        public ReservedBookDTO Cancel(Guid idReserve, Guid idClient, BookToReserveDTO bookToReserveDTO)
+        public ReservedBookDTO Cancel(Guid idReserve, Guid idClient)
         {
             var reserve = _bookToReserveRepository.Get(idReserve);
             var cancelDay = DateTime.Now;
             var cli = _clientRepository.Get(idClient);
 
-
-            if (cancelDay < reserve.StartDateReserve.AddDays(-1))
+            if (reserve.Status == "Pending")
             {
-                if (cancelDay.DayOfWeek != DayOfWeek.Saturday && cancelDay.DayOfWeek != DayOfWeek.Sunday)
+                if (cancelDay < reserve.StartDateReserve.AddDays(-1))
                 {
-                    var updateReserve = new BookToReserve
+                    if (cancelDay.DayOfWeek != DayOfWeek.Saturday && cancelDay.DayOfWeek != DayOfWeek.Sunday)
                     {
-                        Id = reserve.Id,
-                        StartDateReserve = reserve.StartDateReserve,
-                        EndDateReserve = reserve.EndDateReserve,
-                        Status = Estatus.Canceled.ToString()
+                        var updateReserve = new BookToReserve
+                        {
+                            Id = reserve.Id,
+                            StartDateReserve = reserve.StartDateReserve,
+                            EndDateReserve = reserve.EndDateReserve,
+                            Status = Estatus.Canceled.ToString()
 
-                    };
+                        };
 
-                    _bookToReserveRepository.Update(idReserve, updateReserve);
+                        _bookToReserveRepository.Update(idReserve, updateReserve);
 
-                    var cliReserve = new ReservedBookDTO
-                    {
-                        IdReserve = updateReserve.Id,
-                        StartDateReserve = updateReserve.StartDateReserve,
-                        EndDateReserve = updateReserve.EndDateReserve,
-                        Status = Estatus.Canceled.ToString()
+                        var cliReserve = new ReservedBookDTO
+                        {
+                            IdReserve = updateReserve.Id,
+                            StartDateReserve = updateReserve.StartDateReserve,
+                            EndDateReserve = updateReserve.EndDateReserve,
+                            Status = Estatus.Canceled.ToString()
 
 
-                    };
+                        };
 
-                    cli.ReservedBook.RemoveAll(x => x.IdReserve == idReserve);
-                    cliReserve.BookListReserve.AddRange(updateReserve.BookListReserve);
-                    cli.ReservedBook.Add(cliReserve);
+                        cli.ReservedBook.RemoveAll(x => x.IdReserve == idReserve);
+                        cliReserve.BookListReserve.AddRange(updateReserve.BookListReserve);
+                        cli.ReservedBook.Add(cliReserve);
 
-                    return cliReserve;
+                        return cliReserve;
+                    }
+                    else
+                        throw new Exception("Você só pode cancelar uma reserva em dias úteis, em no máximo 24horas antes");
                 }
                 else
-                    throw new Exception("Você só pode cancelar uma reserva em dias úteis, em no máximo 24horas antes");
+                    throw new Exception("Você só pode cancelar uma reserva no máximo 24horas antes");
             }
             else
-                throw new Exception("Você só pode cancelar uma reserva no máximo 24horas antes");
+                throw new Exception("Só é possível cancelar reservas que estão Pendentes");
         }
 
 
@@ -337,113 +343,120 @@ namespace Exercicio_API_Biblioteca.Services
         {
             var reserve = _bookToReserveRepository.Get(idReserve);
 
-
-            var updateReserve = new BookToReserve
+            if (reserve.Status == "Pending")
             {
-                Id = reserve.Id,
-                StartDateReserve = reserve.StartDateReserve,
-                EndDateReserve = reserve.EndDateReserve,
-                Status = Estatus.Finalized.ToString()
+                var updateReserve = new BookToReserve
+                {
+                    Id = reserve.Id,
+                    StartDateReserve = reserve.StartDateReserve,
+                    EndDateReserve = reserve.EndDateReserve,
+                    Status = Estatus.Finalized.ToString()
 
-            };
+                };
 
-            _bookToReserveRepository.Update(idReserve, updateReserve);
+                _bookToReserveRepository.Update(idReserve, updateReserve);
 
-            var cliReserve = new ReservedBookDTO
-            {
-                IdReserve = updateReserve.Id,
-                StartDateReserve = updateReserve.StartDateReserve,
-                EndDateReserve = updateReserve.EndDateReserve,
-                Status = Estatus.Finalized.ToString()
+                var cliReserve = new ReservedBookDTO
+                {
+                    IdReserve = updateReserve.Id,
+                    StartDateReserve = updateReserve.StartDateReserve,
+                    EndDateReserve = updateReserve.EndDateReserve,
+                    Status = Estatus.Finalized.ToString()
 
 
-            };
+                };
 
-            var cli = _clientRepository.Get(idClient);
-            cli.ReservedBook.RemoveAll(x => x.IdReserve == idReserve);
-            cliReserve.BookListReserve.AddRange(updateReserve.BookListReserve);
-            cli.ReservedBook.Add(cliReserve);
+                var cli = _clientRepository.Get(idClient);
+                cli.ReservedBook.RemoveAll(x => x.IdReserve == idReserve);
+                cliReserve.BookListReserve.AddRange(updateReserve.BookListReserve);
+                cli.ReservedBook.Add(cliReserve);
 
-            return cliReserve;
+                return cliReserve;
+            }
+            else
+                throw new Exception("Só é possível finalizar uma reserva Pendente");
+
         }
 
 
-        public FinishWithdrawDTO RegisterWithdrawReserve(Guid idReserve, Guid idClient, WithdrawDTO withdrawDTO) // retira e subtrai -1 livro
+        public FinishWithdrawDTO RegisterWithdrawReserve(Guid idReserve, Guid idClient, WithdrawReserveDTO withdrawReserveDTO)
         {
             var reserve = _bookToReserveRepository.Get(idReserve);
             var cli = _clientRepository.Get(idClient);
 
-            // só dar withdraw 1x, depois da reserva ficar finalizada, não aceitar mais retirada
 
-            var withdraw = new Withdraw
+            if (reserve.Status == "Pending")
             {
-                Id = Guid.NewGuid(),
-                StartWithdraw = reserve.StartDateReserve,
-                EndWithdraw = reserve.EndDateReserve,
-                BookListReserve = reserve.BookListReserve,
-                Status = Estatus.Finalized.ToString()
+                var withdraw = new Withdraw
+                {
+                    Id = Guid.NewGuid(),
+                    StartWithdraw = reserve.StartDateReserve,
+                    EndWithdraw = reserve.EndDateReserve,
+                    BookListReserve = reserve.BookListReserve,
+                    Status = Estatus.Borrowed.ToString(),
+                    IdReserve = idReserve
 
-            };
-            _withdrawRepository.Create(withdraw);
-
-
-            var updateReserveToFinalize = new BookToReserve
-            {
-                Id = reserve.Id,
-                StartDateReserve = reserve.StartDateReserve,
-                EndDateReserve = reserve.EndDateReserve,
-                Status = Estatus.Finalized.ToString()
-
-            };
-            _bookToReserveRepository.Update(idReserve, updateReserveToFinalize);
+                };
+                _withdrawRepository.Create(withdraw);
 
 
-            var cliUpdateReserveToFinalize = new ReservedBookDTO
-            {
-                IdReserve = updateReserveToFinalize.Id,
-                StartDateReserve = updateReserveToFinalize.StartDateReserve,
-                EndDateReserve = updateReserveToFinalize.EndDateReserve,
-                Status = updateReserveToFinalize.Status
+                var updateReserveToFinalize = new BookToReserve
+                {
+                    Id = reserve.Id,
+                    StartDateReserve = reserve.StartDateReserve,
+                    EndDateReserve = reserve.EndDateReserve,
+                    Status = Estatus.Borrowed.ToString()
 
-            };
-            cli.ReservedBook.RemoveAll(x => x.IdReserve == idReserve);
-            cliUpdateReserveToFinalize.BookListReserve.AddRange(reserve.BookListReserve);
-            cli.ReservedBook.Add(cliUpdateReserveToFinalize);
+                };
+                _bookToReserveRepository.Update(idReserve, updateReserveToFinalize);
 
 
-            var cliWithdraw = new FinishWithdrawDTO
-            {
-                IdWithdraw = withdraw.Id,
-                StartWithdraw = withdraw.StartWithdraw,
-                EndWithdraw = withdraw.EndWithdraw,
-                BookListReserve = withdraw.BookListReserve,
-                Status = withdraw.Status
-            };
+                var cliUpdateReserveToFinalize = new ReservedBookDTO
+                {
+                    IdReserve = updateReserveToFinalize.Id,
+                    StartDateReserve = updateReserveToFinalize.StartDateReserve,
+                    EndDateReserve = updateReserveToFinalize.EndDateReserve,
+                    Status = updateReserveToFinalize.Status
+
+                };
+                cli.ReservedBook.RemoveAll(x => x.IdReserve == idReserve);
+                cliUpdateReserveToFinalize.BookListReserve.AddRange(reserve.BookListReserve);
+                cli.ReservedBook.Add(cliUpdateReserveToFinalize);
 
 
-            foreach (var b in reserve.BookListReserve)
-            {
-                var idBook = b.Id;
-                var book = _bookRepository.Get(idBook);
-                book.Quantity--;
+                var cliWithdraw = new FinishWithdrawDTO
+                {
+                    IdWithdraw = withdraw.Id,
+                    StartWithdraw = withdraw.StartWithdraw,
+                    EndWithdraw = withdraw.EndWithdraw,
+                    BookListReserve = withdraw.BookListReserve,
+                    Status = withdraw.Status,
+                    IdReserve = withdraw.IdReserve,
+                };
+
+
+                foreach (var b in reserve.BookListReserve)
+                {
+                    var idBook = b.Id;
+                    var book = _bookRepository.Get(idBook);
+                    book.Quantity--;
+                }
+
+                cli.Withdraws.Add(cliWithdraw);
+
+                return cliWithdraw;
             }
-
-            cli.Withdraws.Add(cliWithdraw);
-
-            return cliWithdraw;
+            else
+                throw new Exception("Já foi feita a retirada dessa reserva ");
         }
 
 
-        public FinishWithdrawDTO RegisterWithdraw(Guid idClient, WithdrawDTO withdrawDTO) // retira e subtrai -1 livro
+        public FinishWithdrawDTO RegisterWithdraw(Guid idClient, WithdrawDTO withdrawDTO)
         {
             var cli = _clientRepository.Get(idClient);
             var dateStart = DateTime.ParseExact(withdrawDTO.StartWithdraw, "dd/MM/yyyy", CultureInfo.CurrentCulture);
             var dateEnd = DateTime.ParseExact(withdrawDTO.EndWithdraw, "dd/MM/yyyy", CultureInfo.CurrentCulture);
 
-            if (dateStart.AddDays(5) > dateEnd)
-            {
-                dateEnd = dateStart.AddDays(5);
-            }
 
             var listBook = new List<BookListReserve>();
             var disponible = 0;
@@ -483,7 +496,7 @@ namespace Exercicio_API_Biblioteca.Services
                 Id = Guid.NewGuid(),
                 StartWithdraw = dateStart,
                 EndWithdraw = dateEnd,
-                Status = Estatus.Finalized.ToString()
+                Status = Estatus.Borrowed.ToString()
 
             };
             withdraw.BookListReserve.AddRange(listBook);
@@ -513,6 +526,116 @@ namespace Exercicio_API_Biblioteca.Services
 
         }
 
+
+        public FinishWithdrawDTO FinalizeWithdrawReserve(Guid idReserve, Guid idClient, Guid idWithdraw)
+        {
+            var withdrawGet = _withdrawRepository.Get(idWithdraw);
+            var reserve = _bookToReserveRepository.Get(idReserve);
+            var cli = _clientRepository.Get(idClient);
+
+            if (reserve.Status == "Borrowed" && withdrawGet.Status == "Borrowed")
+            {
+                var withdraw = new Withdraw
+                {
+                    Id = idWithdraw,
+                    StartWithdraw = reserve.StartDateReserve,
+                    EndWithdraw = reserve.EndDateReserve,
+                    BookListReserve = reserve.BookListReserve,
+                    Status = Estatus.Finalized.ToString()
+
+                };
+                _withdrawRepository.Update(idWithdraw, withdraw);
+
+                var updateReserveToFinalize = new BookToReserve
+                {
+                    Id = reserve.Id,
+                    StartDateReserve = reserve.StartDateReserve,
+                    EndDateReserve = reserve.EndDateReserve,
+                    Status = Estatus.Finalized.ToString()
+
+                };
+                _bookToReserveRepository.Update(idReserve, updateReserveToFinalize);
+
+                var cliUpdateReserveToFinalize = new ReservedBookDTO
+                {
+                    IdReserve = updateReserveToFinalize.Id,
+                    StartDateReserve = updateReserveToFinalize.StartDateReserve,
+                    EndDateReserve = updateReserveToFinalize.EndDateReserve,
+                    Status = updateReserveToFinalize.Status
+
+                };
+                cli.ReservedBook.RemoveAll(x => x.IdReserve == idReserve);
+                cliUpdateReserveToFinalize.BookListReserve.AddRange(reserve.BookListReserve);
+                cli.ReservedBook.Add(cliUpdateReserveToFinalize);
+
+
+                var cliWithdraw = new FinishWithdrawDTO
+                {
+                    IdWithdraw = withdraw.Id,
+                    StartWithdraw = withdraw.StartWithdraw,
+                    EndWithdraw = withdraw.EndWithdraw,
+                    BookListReserve = withdraw.BookListReserve,
+                    Status = withdraw.Status
+                };
+
+
+                foreach (var b in reserve.BookListReserve)
+                {
+                    var idBook = b.Id;
+                    var book = _bookRepository.Get(idBook);
+                    book.Quantity++;
+                }
+
+                cli.Withdraws.Add(cliWithdraw);
+
+                return cliWithdraw;
+            }
+            else
+                throw new Exception("Já foi feito a devolução desse Emprestimo ");
+        }
+
+
+        public FinishWithdrawDTO FinalizeWithdraw(Guid idClient, Guid idWithdraw)
+        {
+            var withdrawGet = _withdrawRepository.Get(idWithdraw);
+            var cli = _clientRepository.Get(idClient);
+
+            if (withdrawGet.Status == "Borrowed")
+            {
+                var withdraw = new Withdraw
+                {
+                    Id = idWithdraw,
+                    StartWithdraw = withdrawGet.StartWithdraw,
+                    EndWithdraw = withdrawGet.EndWithdraw,
+                    BookListReserve = withdrawGet.BookListReserve,
+                    Status = Estatus.Finalized.ToString()
+
+                };
+                _withdrawRepository.Update(idWithdraw, withdraw);
+                               
+                var cliWithdraw = new FinishWithdrawDTO
+                {
+                    IdWithdraw = withdraw.Id,
+                    StartWithdraw = withdraw.StartWithdraw,
+                    EndWithdraw = withdraw.EndWithdraw,
+                    BookListReserve = withdraw.BookListReserve,
+                    Status = withdraw.Status
+                };
+
+                foreach (var b in cliWithdraw.BookListReserve)
+                {
+                    var idBook = b.Id;
+                    var book = _bookRepository.Get(idBook);
+                    book.Quantity++;
+                }
+
+                cli.Withdraws.Add(cliWithdraw);
+
+                return cliWithdraw;
+            }
+            else
+                throw new Exception("Já foi feito a devolução desse Emprestimo ");
+        }
 
     }
 }

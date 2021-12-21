@@ -13,6 +13,7 @@ namespace Exercicio_API_Biblioteca.DTOs
         public string CPF { get; set; }
         public string? Email { get; set; }
         public string CEP { get; set; }
+        public string? Birthdate { get; set; }
         public Adress? Adress { get; set; }
         public List<BookToReserveDTO> BookToReserveDTO { get; set; }
 

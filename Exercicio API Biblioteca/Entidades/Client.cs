@@ -18,6 +18,7 @@ namespace Exercicio_API_Biblioteca.Entidades
         public List<FinishWithdrawDTO>? Withdraws { get; set; }
         public string?  CEP { get; set; }
         public Adress? Adress { get; set; }
+        public string? Birthdate { get; set; }
 
 
 

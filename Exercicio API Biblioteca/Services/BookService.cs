@@ -30,25 +30,24 @@ namespace Exercicio_API_Biblioteca.Services
             return _bookRepository.Get(id);
         }
 
-        public RegisterBookDTO Create(Guid id, RegisterBookDTO registerBookDTO)
+        public RegisterBookDTO Create(RegisterBookDTO registerBookDTO)
         {
+            registerBookDTO.Validar();
+
             var bookExist = _bookRepository.GetByUsername(registerBookDTO.Title);
             if (bookExist != null)
                 throw new Exception("Livro já cadastrado");
 
-
-            var author = _authorRepository.Get(id);
-
+            var authorid = registerBookDTO.AuthorId;
+            var author = _authorRepository.Get(authorid);
 
             var newBook = new Book
             {
-
                 AuthorId = author.Id,
                 AuthorName = author.NameAuthor,
                 Title = registerBookDTO.Title,
                 Abstract = registerBookDTO.Abstract,
                 Quantity = registerBookDTO.Quantity
-
 
             };
 
@@ -58,12 +57,9 @@ namespace Exercicio_API_Biblioteca.Services
             {
                 Id = newBook.Id,
                 Title = registerBookDTO.Title,
-                
+
             };
-
-
             author.BooksList.Add(newBookList);
-
 
             return new RegisterBookDTO
             {
@@ -73,18 +69,17 @@ namespace Exercicio_API_Biblioteca.Services
                 Title = newBook.Title,
                 Abstract = newBook.Abstract,
                 Quantity = newBook.Quantity
-
             };
-
 
         }
 
         public RegisterBookDTO Update(Guid idBook, RegisterBookDTO registerBookDTO)
         {
+            registerBookDTO.Validar();
+
             var bookExist = _bookRepository.Get(idBook);
             if (bookExist == null)
                 throw new Exception("O Livro não existe");
-
 
             var newBookUpdate = new Book
             {
@@ -93,9 +88,7 @@ namespace Exercicio_API_Biblioteca.Services
                 Abstract = registerBookDTO.Abstract,
                 Quantity = registerBookDTO.Quantity
 
-
             };
-
             _bookRepository.Update(idBook, newBookUpdate);
 
             return new RegisterBookDTO

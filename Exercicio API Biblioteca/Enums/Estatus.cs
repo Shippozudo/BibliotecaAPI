@@ -5,6 +5,7 @@
         Pending = 0,
         Finalized = 1,
         Canceled = 2,
+        Borrowed = 3
 
     }
 }

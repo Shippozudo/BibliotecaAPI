@@ -30,7 +30,7 @@ namespace Exercicio_API_Biblioteca.Controllers
 
 
 
-        [HttpGet, Route("reservations")] // TODAS RESERVAS
+        [HttpGet, Route("/reservations")] // TODAS RESERVAS
         public IActionResult Get()
         {
             return Ok(_bookToReserveService.Get());
@@ -38,7 +38,7 @@ namespace Exercicio_API_Biblioteca.Controllers
 
         
         
-        [HttpGet, AllowAnonymous, Route("reservations/{idReserve}")] //Reserva pelo ID
+        [HttpGet, AllowAnonymous, Route("/reservations/{idReserve}")] //Reserva pelo ID
         public IActionResult Get(Guid idReserve)
         {
             return Ok(_bookToReserveService.Get(idReserve));
@@ -46,7 +46,7 @@ namespace Exercicio_API_Biblioteca.Controllers
 
         
         
-        [HttpGet, AllowAnonymous, Route("reservations/Client/{idClient}")] //Todas reservas do Client
+        [HttpGet, AllowAnonymous, Route("/reservations/{idClient}")] //Todas reservas do Client
         public IActionResult GetAll(Guid idClient)
         {
 
@@ -56,7 +56,7 @@ namespace Exercicio_API_Biblioteca.Controllers
 
 
 
-        [HttpPost, AllowAnonymous, Route("reservations/{idClient}")]
+        [HttpPost, AllowAnonymous, Route("/reservations/{idClient}")]
         public IActionResult Reserve(Guid idClient, [FromBody] BookToReserveDTO bookToReserveDTO)
         {
             return Created("", _clientService.Reserve(idClient, bookToReserveDTO));
@@ -64,7 +64,7 @@ namespace Exercicio_API_Biblioteca.Controllers
 
 
 
-        [HttpPut, AllowAnonymous, Route("reservarions/update{idReserve}/{idClient}")]
+        [HttpPut, AllowAnonymous, Route("/reservarions/update/{idReserve}/{idClient}")]
         public IActionResult UpdateReserve(Guid idReserve, Guid idClient, [FromBody] BookToReserveDTO reservedBook)
         {
             return Ok(_clientService.UpdateReserve(idReserve, idClient, reservedBook));
@@ -72,15 +72,15 @@ namespace Exercicio_API_Biblioteca.Controllers
 
 
 
-        [HttpPut, AllowAnonymous, Route("reservations/cancel/{idReserve}/{idClient}")]
-        public IActionResult Cancel(Guid idReserve, Guid idClient, BookToReserveDTO reservedBook)
+        [HttpPut, AllowAnonymous, Route("/reservations/cancel/{idReserve}/{idClient}")]
+        public IActionResult Cancel(Guid idReserve, Guid idClient)
         {
-            return Ok(_clientService.Cancel(idReserve, idClient, reservedBook));
+            return Ok(_clientService.Cancel(idReserve, idClient));
         }
 
 
 
-        [HttpPut, AllowAnonymous, Route("reservations/finalize/{idReserve}/{idClient}")]
+        [HttpPut, AllowAnonymous, Route("/reservations/finalize/{idReserve}/{idClient}")]
         public IActionResult Finalize(Guid idReserve, Guid idClient, BookToReserveDTO reservedBook)
         {
             return Ok(_clientService.Finalize(idReserve, idClient, reservedBook));

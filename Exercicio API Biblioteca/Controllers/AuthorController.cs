@@ -22,13 +22,13 @@ namespace Exercicio_API_Biblioteca.Controllers
         }
 
 
-        [HttpGet,  Route("authors")]
+        [HttpGet, Route("/author")]
         public IActionResult Get()
         {
             return Ok(_authorService.Get());
         }
 
-        [HttpGet, Route("authors/{id}")]
+        [HttpGet, Route("/author/{id}")]
         public IActionResult Get(Guid id)
         {
             return Ok(_authorService.Get(id));
@@ -36,8 +36,7 @@ namespace Exercicio_API_Biblioteca.Controllers
         }
 
 
-
-        [HttpPost, AllowAnonymous, Route("authors")]
+        [HttpPost, AllowAnonymous, Route("/author")]
         public IActionResult Register([FromBody] NewAuthorDTO newAuthorDTO)
         {
             return Created("", _authorService.Create(newAuthorDTO));
@@ -45,17 +44,18 @@ namespace Exercicio_API_Biblioteca.Controllers
         }
 
 
-        [HttpPut, AllowAnonymous, Route("authors/{id}")]
-        public IActionResult Update (Guid id, [FromBody] NewAuthorDTO newAuthorDTO)
+        [HttpPut, AllowAnonymous, Route("/author/{id}")]
+        public IActionResult Update(Guid id, [FromBody] NewAuthorDTO newAuthorDTO)
         {
             return Created("", _authorService.Update(id, newAuthorDTO));
 
         }
 
-        [HttpDelete, AllowAnonymous,  Route("authors/{id}")]
-        public IActionResult Delete (Guid id)
+        [HttpDelete, AllowAnonymous, Route("/author/{id}")]
+        public IActionResult Delete(Guid id)
         {
-            return Ok(_authorService.Delete(id));
+            _authorService.Delete(id);
+            return Ok();
         }
 
 

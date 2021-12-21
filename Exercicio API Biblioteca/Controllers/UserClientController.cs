@@ -31,14 +31,14 @@ namespace Exercicio_API_Biblioteca.Controllers
         }
 
 
-        [HttpGet, AllowAnonymous, Route("users/")]
-        public IActionResult Get([FromQuery] string Name, string CPF, int Page, int Items)
+        [HttpGet, AllowAnonymous, Route("/users/client")]
+        public IActionResult Get([FromQuery] string Name, string CPF, string birthdate, int Page, int Items)
         {
-            return Ok(_clientService.Get(Name, CPF, Page, Items));
+            return Ok(_clientService.Get(Name, CPF, birthdate, Page, Items));
         }
 
 
-        [HttpGet, AllowAnonymous, Route("users/{id}")]
+        [HttpGet, AllowAnonymous, Route("/users/client/{id}")]
         public IActionResult Get(Guid id)
         {
             return Ok(_clientService.Get(id));
@@ -47,7 +47,7 @@ namespace Exercicio_API_Biblioteca.Controllers
 
 
 
-        [HttpPost, AllowAnonymous, Route("/users")]
+        [HttpPost, AllowAnonymous, Route("/users/client")]
         public async Task<IActionResult> RegisterAsync([FromBody] CreateClientDTO createClientDTO)
         {
 
@@ -56,14 +56,14 @@ namespace Exercicio_API_Biblioteca.Controllers
         }
 
 
-        [HttpPost, AllowAnonymous, Route("Login")]
+        [HttpPost, AllowAnonymous, Route("/user/client/login")]
         public IActionResult Login([FromBody] UserLoginDTO loginDTO)
         {
             return Ok(_userClientService.Login(loginDTO.Username, loginDTO.Password));
 
         }
 
-        [HttpPut, AllowAnonymous, Route("{id}/users")]
+        [HttpPut, AllowAnonymous, Route("/users/client/{id}")]
         public IActionResult Update(Guid id, [FromBody] CreateClientDTO createClientDTO)
         {
             return Created(" ", _clientService.Update(id, createClientDTO));

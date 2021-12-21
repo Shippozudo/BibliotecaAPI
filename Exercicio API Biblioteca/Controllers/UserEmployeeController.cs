@@ -34,14 +34,14 @@ namespace Exercicio_API_Biblioteca.Controllers
             _userClientService = userClientService;
         }
 
-        [HttpGet, AllowAnonymous, Route("users/employee")]
+        [HttpGet, AllowAnonymous, Route("/users/employee")]
         public IActionResult Get()
         {
             return Ok(_employeeService.Get());
         }
 
 
-        [HttpGet, AllowAnonymous, Route("users/employee/{id}")]
+        [HttpGet, AllowAnonymous, Route("/users/employee/{id}")]
         public IActionResult Get(Guid id)
         {
             return Ok(_employeeService.Get(id));
@@ -49,9 +49,7 @@ namespace Exercicio_API_Biblioteca.Controllers
 
 
 
-
-
-        [HttpPost, AllowAnonymous, Route("users/employee")]
+        [HttpPost, AllowAnonymous, Route("/users/employee")]
         public IActionResult Register([FromBody] CreateEmployeeDTO createEmployeeDTO)
         {
             return Created("", _employeeService.Create(createEmployeeDTO));
@@ -60,7 +58,7 @@ namespace Exercicio_API_Biblioteca.Controllers
 
 
 
-        [HttpPost, AllowAnonymous, Route("Login/employee")]
+        [HttpPost, AllowAnonymous, Route("/user/employee/login")]
         public IActionResult Login([FromBody] UserLoginDTO loginDTO)
         {
             return Ok(_userClientService.Login(loginDTO.Username, loginDTO.Password));
@@ -69,7 +67,7 @@ namespace Exercicio_API_Biblioteca.Controllers
 
 
 
-        [HttpPut, AllowAnonymous, Route("{id}/users/employee")]
+        [HttpPut, AllowAnonymous, Route("/users/employee/{id}")]
         public IActionResult Update(Guid id, CreateEmployeeDTO createEmployeeDTO)
         {
             return Created("", _employeeService.Update(id, createEmployeeDTO));

@@ -1,23 +1,21 @@
-﻿using Exercicio_API_Biblioteca.DTOs;
-using Exercicio_API_Biblioteca.Enums;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace Exercicio_API_Biblioteca.Entidades
 {
-    public class Withdraw :  BaseEntity
+    public class WithdrawReserve : BaseEntity
     {
-        public Withdraw()
+        public WithdrawReserve()
         {
             BookListReserve = new List<BookListReserve>();
         }
 
-        
+
         public List<BookListReserve> BookListReserve { get; set; }
         public DateTime StartWithdraw { get; set; }
         public DateTime EndWithdraw { get; set; }
         public string Status { get; set; }
-        public Guid? IdReserve { get; set; }
+        public Guid IdReserve { get; set; }
 
     }
 }
