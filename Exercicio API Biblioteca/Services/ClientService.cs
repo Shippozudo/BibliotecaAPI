@@ -229,10 +229,7 @@ namespace Exercicio_API_Biblioteca.Services
             var dateStart = DateTime.ParseExact(bookToReserveDTO.StartDateReserve, "d/M/yyyy", CultureInfo.CurrentCulture);
             var dateEnd = DateTime.ParseExact(bookToReserveDTO.EndDateReserve, "d/M/yyyy", CultureInfo.CurrentCulture);
 
-            if (dateStart.AddDays(5) > dateEnd)
-            {
-                dateEnd = dateStart.AddDays(5);
-            }
+           
 
             var listBook = new List<BookListReserve>();
             var disponible = 0;
